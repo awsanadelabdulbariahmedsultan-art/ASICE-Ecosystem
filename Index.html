@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ASICE Sovereign Dashboard | Eng. Awsan Sultan</title>
-    <!-- تضمين مكتبة الأيقونات الرائعة والخطوط -->
+    <!-- تضمين مكتبة الأيقونات الرائعة والخطوط للواجهات -->
     <link rel="stylesheet" href="https://cloudflare.com">
     <!-- ربط ملف المظهر والتنسيق الخارجي -->
     <link rel="stylesheet" href="style.css">
@@ -121,11 +121,9 @@
         <p>Copyright © 2026 ASICE Ecosystem. All Intellectual Property and Sovereign rights reserved strictly to Eng. Awsan Sultan under Yemeni Intellectual Protection Code.</p>
     </footer>
 
-    <!-- استدعاء ملفات السكربتات المجزأة والمنفصلة بالترتيب -->
-    <script src="pi-integration.js"></script>
-    <script src="mining-infra.js"></script>
-    <script src="nft-marketplace.js"></script>
-    <script src="game-security.js"></script>
+    <!-- استدعاء ملفات المنطق والربط الخارجي بالترتيب -->
+    <script src="app.js"></script>
+    <script src="pi-sdk-bridge.js"></script>
 </body>
 </html>
 
@@ -285,38 +283,11 @@ header {
 
 
 /**
- * ASICE Ecosystem - Pi Network SDK Initializer
- * Designed for Eng. Awsan Sultan
+ * ASICE Ecosystem - Core Application Telemetry Broker
+ * Combines Game Engine, Mining Monitoring and Cyber Security Core Logic
  */
 
-window.addEventListener('DOMContentLoaded', () => {
-    console.log("ASICE Infrastructure Web Node initialized successfully.");
-    initializePiBridge();
-});
-
-function initializePiBridge() {
-    // التحقق من وجود حزمة المطورين لشبكة باي داخل المتصفح
-    if (window.Pi) {
-        const walletStatus = document.getElementById('pi-wallet-status');
-        walletStatus.innerHTML = "<i class='fa-solid fa-circle-check'></i> Pi Browser: Connected";
-        walletStatus.style.background = "#2b9348";
-        walletStatus.style.borderColor = "#1b4332";
-        console.log("Sovereign Node connected to Pi Network sandbox backend.");
-    } else {
-        console.log("Standard browser detected. Running in simulation environment.");
-    }
-}
-
-
-
-
-
-
-/**
- * ASICE Ecosystem - Mining Infrastructure Telemetry Broker
- * Mimics integration with Mining-Infra/PowerManager.py
- */
-
+// 1. مراقبة طاقة أجهزة التعدين والمحاكاة لـ PowerManager.py
 function checkHardwareTelemetry() {
     const tempElement = document.getElementById('core-temp');
     const cardElement = document.getElementById('mining-card');
@@ -326,7 +297,7 @@ function checkHardwareTelemetry() {
     let currentTemp = Math.floor(Math.random() * (78 - 60 + 1)) + 60;
     tempElement.innerText = currentTemp + " °C";
 
-    // تفعيل بروتوكول الطوارئ في حال تعدت الحرارة حد الأمان 75° مئوية
+    // تفعيل بروتوكول الإغلاق التلقائي في حال تعدت الحرارة حد الأمان 75° مئوية
     if (currentTemp >= 75) {
         tempElement.style.color = "var(--danger)";
         statusElement.className = "badge badge-danger";
@@ -339,37 +310,19 @@ function checkHardwareTelemetry() {
     }
 }
 
-
-
-
-
-/**
- * ASICE Ecosystem - Decentralized ASA NFT Marketplace Interface
- * Bridges front-end logic with NFT-ASA/Marketplace.sol
- */
-
+// 2. واجهة تداول الفن الرقمي المربوط بـ NFT-ASA/Marketplace.sol
 function connectToMarketplace() {
     console.log("Establishing secure connection with Marketplace.sol at block node...");
-    // محاكاة استدعاء الدالة البرمجية والتأكد من فرض نسبة الرسوم لصندوق المهندس أوسان
     alert("Connecting with Marketplace.sol contract... Initializing Pi Wallet payment bridge for ASA Artwork trading (2.5% platform fee goes directly to Eng. Awsan Sultan Development Fund).");
 }
 
-
-
-
-
-
-
-/**
- * ASICE Ecosystem - GameFi Core & Security Script
- * Bridges Crypto-Game/GameLogic.py & Security-Infra/Redundancy_Protocol.py
- */
-
+// 3. محرك الألعاب ومزامنة الرصيد لـ Crypto-Game/GameLogic.py
 function triggerBattleEngine() {
     console.log("Invoking ASICECryptoGameEngine... Synchronizing player node metadata.");
     alert("ASICECryptoGameEngine initialized. Processing matchmaking logic on current web node... Baseline reward: 150 XP.");
 }
 
+// 4. نظام الأمان واستدعاء خوارزميات التشفير لـ Security-Infra/Redundancy_Protocol.py
 function verifySystemIntegrity() {
     console.log("Executing SHA256 Node Signature verification via ASICESecurityProtocol...");
     alert("Running ASICESecurityProtocol verification check... SHA256 Node Signature is authentic. All cloud infrastructure secure and encrypted under Yemeni Intellectual property code.");
@@ -378,15 +331,27 @@ function verifySystemIntegrity() {
 
 
 
+/**
+ * ASICE Ecosystem - Pi Network SDK Integration Bridge
+ * Designed explicitly for secure execution inside Pi Browser Sandbox
+ */
 
+window.addEventListener('DOMContentLoaded', () => {
+    console.log("ASICE Infrastructure Web Node Core Initialized.");
+    bindPiWalletContext();
+});
 
-
-
-
-
-
-
-
-
+function bindPiWalletContext() {
+    // التحقق الفوري من تهيئة حزمة المطورين المضمنة لشبكة باي (Pi App Container)
+    if (window.Pi) {
+        const walletStatus = document.getElementById('pi-wallet-status');
+        walletStatus.innerHTML = "<i class='fa-solid fa-circle-check'></i> Pi Browser: Connected";
+        walletStatus.style.background = "#2b9348";
+        walletStatus.style.borderColor = "#1b4332";
+        console.log("Sovereign Node authentication context bound to Pi Network sandbox backend.");
+    } else {
+        console.log("Standard runtime web node detected. Running modules in simulation mode.");
+    }
+}
 
 
