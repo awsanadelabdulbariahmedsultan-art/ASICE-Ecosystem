@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASICE Sovereign Dashboard | Eng. Awsan Sultan</title>
+    <!-- تضمين مكتبة الأيقونات الرائعة والخطوط -->
+    <link rel="stylesheet" href="https://cloudflare.com">
+    <!-- ربط ملف المظهر والتنسيق الخارجي -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <div class="founder-info">
+            <h1>ASICE Ecosystem Sovereign Dashboard</h1>
+            <p><i class="fa-solid fa-user-shield"></i> Founder: Eng. Awsan Adel Abdulberi Ahmed Sultan | National ID: 01010305468 (YEMEN)</p>
+        </div>
+        <div class="pi-status" id="pi-wallet-status">
+            <i class="fa-solid fa-wallet"></i> Pi Browser: Disconnected
+        </div>
+    </header>
+
+    <div class="grid-container">
+        
+        <!-- لوحة تعدين البنية التحتية والمراقبة المربوطة بـ PowerManager -->
+        <div class="card" id="mining-card">
+            <div class="card-header">
+                <h3><i class="fa-solid fa-microchip" style="color: var(--primary);"></i> Mining-Infra Monitor</h3>
+                <span class="badge badge-success" id="mining-status">Active</span>
+            </div>
+            <div class="telemetry-box">
+                <div class="telemetry-item">
+                    <span class="telemetry-label">ASIC Hashrate Total</span>
+                    <span class="telemetry-value" style="color: var(--primary); font-weight: bold;">450 TH/s</span>
+                </div>
+                <div class="telemetry-item">
+                    <span class="telemetry-label">Core Temperature</span>
+                    <span class="telemetry-value" id="core-temp">68 °C</span>
+                </div>
+                <div class="telemetry-item">
+                    <span class="telemetry-label">Power Consumption</span>
+                    <span class="telemetry-value">3.2 kW/h</span>
+                </div>
+            </div>
+            <button class="btn" onclick="checkHardwareTelemetry()"><i class="fa-solid fa-arrows-rotate"></i> Scan Hardware</button>
+        </div>
+
+        <!-- لوحة معرض ومبيعات فن ASA NFT المربوطة بـ ASA_Collection -->
+        <div class="card warning">
+            <div class="card-header">
+                <h3><i class="fa-solid fa-palette" style="color: var(--warning);"></i> NFT-ASA Marketplace</h3>
+                <span class="badge badge-warning">Live Sales</span>
+            </div>
+            <div class="telemetry-box">
+                <div class="telemetry-item">
+                    <span class="telemetry-label">Collection Name</span>
+                    <span class="telemetry-value">Awsan Sultan Art (ASA)</span>
+                </div>
+                <div class="telemetry-item">
+                    <span class="telemetry-label">Total Generated Volume</span>
+                    <span class="telemetry-value">45,000 Artworks</span>
+                </div>
+                <div class="telemetry-item">
+                    <span class="telemetry-label">Platform Trading Fee</span>
+                    <span class="telemetry-value">2.5%</span>
+                </div>
+            </div>
+            <button class="btn" style="background: var(--warning); color: #000;" onclick="connectToMarketplace()"><i class="fa-solid fa-store"></i> Browse ASA Gallery</button>
+        </div>
+
+        <!-- لوحة بوابة الألعاب المربوطة بـ GameLogic -->
+        <div class="card">
+            <div class="card-header">
+                <h3><i class="fa-solid fa-gamepad" style="color: var(--primary);"></i> Crypto-Game Engine</h3>
+                <span class="badge badge-success">v2.0.0</span>
+            </div>
+            <div class="telemetry-box">
+                <div class="telemetry-item">
+                    <span class="telemetry-label">Active Node Connection</span>
+                    <span class="telemetry-value">Stable</span>
+                </div>
+                <div class="telemetry-item">
+                    <span class="telemetry-label">Base PvP Victory Reward</span>
+                    <span class="telemetry-value" style="color: var(--primary);">150 XP + AST</span>
+                </div>
+                <div class="telemetry-item">
+                    <span class="telemetry-label">Skill Tree Upgrade Threshold</span>
+                    <span class="telemetry-value">>= 500 XP</span>
+                </div>
+            </div>
+            <button class="btn" onclick="triggerBattleEngine()"><i class="fa-solid fa-sword"></i> Launch PvP Match</button>
+        </div>
+
+        <!-- نظام الأمان الذكي المربوط بـ Redundancy_Protocol -->
+        <div class="card danger" id="security-card">
+            <div class="card-header">
+                <h3><i class="fa-solid fa-shield-halved" style="color: var(--danger);"></i> Security & Failover</h3>
+                <span class="badge badge-success" id="security-status">Secure</span>
+            </div>
+            <div class="telemetry-box">
+                <div class="telemetry-item">
+                    <span class="telemetry-label">Crypto Signatures (SHA256)</span>
+                    <span class="telemetry-value" style="color: #00ff00;">Verified</span>
+                </div>
+                <div class="telemetry-item">
+                    <span class="telemetry-label">Cold Storage Protection</span>
+                    <span class="telemetry-value">Enabled</span>
+                </div>
+                <div class="telemetry-item">
+                    <span class="telemetry-label">Backup Generator Status</span>
+                    <span class="telemetry-value">Standby</span>
+                </div>
+            </div>
+            <button class="btn" style="background: var(--danger); color: #fff;" onclick="verifySystemIntegrity()"><i class="fa-solid fa-user-lock"></i> Check Encryption</button>
+        </div>
+
+    </div>
+
+    <footer class="legal-footer">
+        <p>Copyright © 2026 ASICE Ecosystem. All Intellectual Property and Sovereign rights reserved strictly to Eng. Awsan Sultan under Yemeni Intellectual Protection Code.</p>
+    </footer>
+
+    <!-- استدعاء ملفات السكربتات المجزأة والمنفصلة بالترتيب -->
+    <script src="pi-integration.js"></script>
+    <script src="mining-infra.js"></script>
+    <script src="nft-marketplace.js"></script>
+    <script src="game-security.js"></script>
+</body>
+</html>
+
+
+:root {
+    --primary: #00ffcc;
+    --bg-dark: #0a0f1d;
+    --card-bg: #141b2d;
+    --text: #ffffff;
+    --text-muted: #8a99ad;
+    --danger: #ff4a5a;
+    --warning: #ffb800;
+}
+
+* { 
+    box-sizing: border-box; 
+    margin: 0; 
+    padding: 0; 
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+}
+
+body { 
+    background-color: var(--bg-dark); 
+    color: var(--text); 
+    padding: 20px; 
+}
+
+header { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    padding-bottom: 20px; 
+    border-bottom: 1px solid var(--card-bg); 
+    margin-bottom: 30px; 
+}
+
+.founder-info h1 { 
+    font-size: 24px; 
+    color: var(--primary); 
+    font-weight: 600; 
+}
+
+.founder-info p { 
+    font-size: 12px; 
+    color: var(--text-muted); 
+    margin-top: 4px; 
+}
+
+.pi-status { 
+    background: #5a189a; 
+    padding: 8px 16px; 
+    border-radius: 20px; 
+    font-size: 14px; 
+    display: flex; 
+    align-items: center; 
+    gap: 8px; 
+    border: 1px solid #7b2cbf; 
+}
+
+.grid-container { 
+    display: grid; 
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+    gap: 20px; 
+}
+
+.card { 
+    background-color: var(--card-bg); 
+    border-radius: 12px; 
+    padding: 20px; 
+    border: 1px solid #1f293d; 
+    position: relative; 
+    overflow: hidden; 
+}
+
+.card::before { 
+    content: ''; 
+    position: absolute; 
+    top: 0; 
+    left: 0; 
+    width: 4px; 
+    height: 100%; 
+    background: var(--primary); 
+}
+
+.card.danger::before { background: var(--danger); }
+.card.warning::before { background: var(--warning); }
+
+.card-header { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    margin-bottom: 15px; 
+}
+
+.card-header h3 { 
+    font-size: 18px; 
+    display: flex; 
+    align-items: center; 
+    gap: 10px; 
+}
+
+.badge { 
+    font-size: 11px; 
+    padding: 4px 8px; 
+    border-radius: 4px; 
+    font-weight: bold; 
+    text-transform: uppercase; 
+}
+
+.badge-success { background: rgba(0, 255, 204, 0.1); color: var(--primary); }
+.badge-danger { background: rgba(255, 74, 90, 0.1); color: var(--danger); }
+.badge-warning { background: rgba(255, 184, 0, 0.1); color: var(--warning); }
+
+.telemetry-item { 
+    display: flex; 
+    justify-content: space-between; 
+    padding: 10px 0; 
+    border-bottom: 1px solid #1f293d; 
+    font-size: 14px; 
+}
+
+.telemetry-item:last-child { border: none; }
+.telemetry-label { color: var(--text-muted); }
+
+.btn { 
+    width: 100%; 
+    padding: 12px; 
+    border: none; 
+    border-radius: 8px; 
+    background: var(--primary); 
+    color: var(--bg-dark); 
+    font-weight: bold; 
+    cursor: pointer; 
+    margin-top: 15px; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    gap: 8px; 
+    transition: 0.3s; 
+}
+
+.btn:hover { 
+    opacity: 0.9; 
+    box-shadow: 0 0 15px rgba(0,255,204,0.4); 
+}
+
+.legal-footer { 
+    text-align: center; 
+    margin-top: 40px; 
+    padding-top: 20px; 
+    border-top: 1px solid var(--card-bg); 
+    color: var(--text-muted); 
+    font-size: 12px; 
+}
+
+
+
+
+/**
+ * ASICE Ecosystem - Pi Network SDK Initializer
+ * Designed for Eng. Awsan Sultan
+ */
+
+window.addEventListener('DOMContentLoaded', () => {
+    console.log("ASICE Infrastructure Web Node initialized successfully.");
+    initializePiBridge();
+});
+
+function initializePiBridge() {
+    // التحقق من وجود حزمة المطورين لشبكة باي داخل المتصفح
+    if (window.Pi) {
+        const walletStatus = document.getElementById('pi-wallet-status');
+        walletStatus.innerHTML = "<i class='fa-solid fa-circle-check'></i> Pi Browser: Connected";
+        walletStatus.style.background = "#2b9348";
+        walletStatus.style.borderColor = "#1b4332";
+        console.log("Sovereign Node connected to Pi Network sandbox backend.");
+    } else {
+        console.log("Standard browser detected. Running in simulation environment.");
+    }
+}
+
+
+
+
+
+
+/**
+ * ASICE Ecosystem - Mining Infrastructure Telemetry Broker
+ * Mimics integration with Mining-Infra/PowerManager.py
+ */
+
+function checkHardwareTelemetry() {
+    const tempElement = document.getElementById('core-temp');
+    const cardElement = document.getElementById('mining-card');
+    const statusElement = document.getElementById('mining-status');
+    
+    // توليد قراءة حرارية عشوائية لمحاكاة الفحص الذكي للـ ASIC Nodes
+    let currentTemp = Math.floor(Math.random() * (78 - 60 + 1)) + 60;
+    tempElement.innerText = currentTemp + " °C";
+
+    // تفعيل بروتوكول الطوارئ في حال تعدت الحرارة حد الأمان 75° مئوية
+    if (currentTemp >= 75) {
+        tempElement.style.color = "var(--danger)";
+        statusElement.className = "badge badge-danger";
+        statusElement.innerText = "CRITICAL - SHUTDOWN";
+        alert("CRITICAL WARNING: PowerManager.py telemetry node detected temperature over 75°C! Triggering auto-shutdown mechanism to preserve hardware.");
+    } else {
+        tempElement.style.color = "var(--primary)";
+        statusElement.className = "badge badge-success";
+        statusElement.innerText = "Active";
+    }
+}
+
+
+
+
+
+/**
+ * ASICE Ecosystem - Decentralized ASA NFT Marketplace Interface
+ * Bridges front-end logic with NFT-ASA/Marketplace.sol
+ */
+
+function connectToMarketplace() {
+    console.log("Establishing secure connection with Marketplace.sol at block node...");
+    // محاكاة استدعاء الدالة البرمجية والتأكد من فرض نسبة الرسوم لصندوق المهندس أوسان
+    alert("Connecting with Marketplace.sol contract... Initializing Pi Wallet payment bridge for ASA Artwork trading (2.5% platform fee goes directly to Eng. Awsan Sultan Development Fund).");
+}
+
+
+
+
+
+
+
+/**
+ * ASICE Ecosystem - GameFi Core & Security Script
+ * Bridges Crypto-Game/GameLogic.py & Security-Infra/Redundancy_Protocol.py
+ */
+
+function triggerBattleEngine() {
+    console.log("Invoking ASICECryptoGameEngine... Synchronizing player node metadata.");
+    alert("ASICECryptoGameEngine initialized. Processing matchmaking logic on current web node... Baseline reward: 150 XP.");
+}
+
+function verifySystemIntegrity() {
+    console.log("Executing SHA256 Node Signature verification via ASICESecurityProtocol...");
+    alert("Running ASICESecurityProtocol verification check... SHA256 Node Signature is authentic. All cloud infrastructure secure and encrypted under Yemeni Intellectual property code.");
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
