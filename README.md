@@ -1,3 +1,8 @@
+<p align="center">
+  <img src="ASICE LOGO.png" alt="ASICE Logo" width="1254" height="1254" />
+</p>
+
+
 # 🏛️ ASICE Sovereign Ecosystem Dashboard
 
 Advanced Sovereign Infrastructure & Crypto Ecosystem (ASICE) is a multi-tier decentralized architecture built for next-generation Web3 applications, automated grid computing, and digital asset sovereignty.
