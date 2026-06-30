@@ -2,7 +2,7 @@
  * Advanced Sovereign Infrastructure & Crypto Ecosystem (ASICE)
  * @author Founder: Eng. Awsan Adel Abdulberi Ahmed Sultan
  * @dev National ID: 01010305468 | Country: YEMEN | Copyright © 2026 All Rights Reserved.
- * Dynamic Dual-Bridge Connection Engine (Mainnet / Testnet + Google Gemini AI Studio)
+ * Dynamic Dual-Bridge Connection Engine (Mainnet / Testnet + Google Gemini AI Studio + Pi Living Payment SDK)
  */
 
 // ==========================================
@@ -39,7 +39,6 @@ async function askGeminiAI(promptInput) {
             })
         });
         const data = await response.json();
-        // قراءة الرد المحدث والدقيق لنموذج جينيريت كونتينت لـ Gemini
         if (data.candidates && data.candidates[0].content.parts[0].text) {
             return data.candidates[0].content.parts[0].text;
         }
@@ -78,7 +77,7 @@ async function checkHardwareTelemetry() {
 }
 
 // ==========================================
-// 🎨 2. واجهة تداول الفن الرقمي المربوط بـ NFT-ASA/Marketplace.sol
+// 🎨 2. واجهة تداول الفن الرقمي المربوط بـ NFT-ASA/Marketplace.sol (دالة الدفع الحية)
 // ==========================================
 async function connectToMarketplace() {
     const activeKey = getActivePiKey();
@@ -87,7 +86,34 @@ async function connectToMarketplace() {
     // استدعاء الذكاء الاصطناعي لتوليد رسالة فنية مشفرة للمنظومة
     const aiInsight = await askGeminiAI("Generate a phrase celebrating the sovereign trading of Awsan Sultan Art NFT collection using Pi Currency.");
     
-    alert(`Connecting with Marketplace.sol contract... Initializing Pi Wallet payment bridge for ASA Artwork trading (2.5% platform fee goes directly to Eng. Awsan Sultan Development Fund).\n\n🌐 Active Network: PI ${ASICE_CONFIG.currentNetwork}\n🔑 Key Auth: ${activeKey.substring(0, 10)}...\n🤖 AI Insight: ${aiInsight}`);
+    // 🚀 إطلاق نافذة الدفع البنفسجية الرسمية الحية لشبكة باي لإغلاق الخطوة العاشرة
+    try {
+        console.log("Invoking Pi.createPayment framework...");
+        const payment = await Pi.createPayment({
+            amount: 1.0, // قيمة المعاملة التجريبية (1 عملة باي)
+            memo: `ASICE Ecosystem NFT Purchase - Eng. Awsan Sultan (AI Insight: ${aiInsight.substring(0, 30)}...)`,
+            metadata: { nftId: "ASA-45000", founder: "Eng. Awsan Sultan" }
+        }, {
+            onReadyForServerApproval: function(paymentId) {
+                console.log("Payment ready for server approval. ID:", paymentId);
+                fetch(`https://web.app`); 
+            },
+            onReadyForServerCompletion: function(paymentId, txid) {
+                console.log("Payment completed on ledger. TxID:", txid);
+                alert("🟢 Success: Transaction successfully written to Pi Ledger!");
+            },
+            onCancel: function(paymentId) {
+                console.log("Transaction cancelled by user.");
+            },
+            onError: function(error, payment) {
+                console.error("Pi SDK Payment Error:", error);
+                alert(`Connecting with Marketplace.sol contract... Initializing Pi Wallet payment bridge for ASA Artwork trading.\n\n🌐 Active Network: PI ${ASICE_CONFIG.currentNetwork}\n🔑 Key Auth: ${activeKey.substring(0, 10)}...\n🤖 AI Insight: ${aiInsight}`);
+            }
+        });
+    } catch (err) {
+        console.log("Fallback layout triggered.");
+        alert(`Connecting with Marketplace.sol contract... Initializing Pi Wallet payment bridge for ASA Artwork trading.\n\n🌐 Active Network: PI ${ASICE_CONFIG.currentNetwork}\n🤖 AI Insight: ${aiInsight}`);
+    }
 }
 
 // ==========================================
