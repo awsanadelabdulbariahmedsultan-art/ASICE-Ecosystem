@@ -2,7 +2,7 @@
  * Advanced Sovereign Infrastructure & Crypto Ecosystem (ASICE)
  * Founder: Eng. Awsan Adel Abdulberi Ahmed Sultan
  * National ID: 01010305468 | Country: YEMEN | Copyright © 2026 All Rights Reserved.
- * Dynamic Dual-Bridge Connection Engine (Mainnet / Testnet + Google Gemini AI)
+ * Dynamic Dual-Bridge Connection Engine + Multi-Gateway Payment Engine (Pi, Crypto, & Fiat)
  */
 
 const ASICE_CONFIG = {
@@ -13,14 +13,16 @@ const ASICE_CONFIG = {
     PI_MAINNET_KEY: "argiip39ks1mbuy5h9op7isuuyexmozbyfo5tslwyu6wj5kp0m5",
     PI_TESTNET_KEY: "7gdnsqgwbvqs2cyh6boxr17a22ztfpbok34nrwupos1tsilr1x",
     
-    // الوضع الحالي من بيئة التشغيل الذكية
+    // الوضع الحالي من بيئة التشغيل الذكية: "TESTNET" للتجربة واجتياز المرحلة 10، وتتحول إلى "MAINNET" للإطلاق الحقيقي
     currentNetwork: "TESTNET" 
 };
 
 // ==========================================
-// 1. تهيئة الـ Pi SDK لشبكة الفحص والتجربة (هام جداً للمرحلة 10)
+// 1. تهيئة الـ Pi SDK ديناميكياً بناءً على وضع البيئة
 // ==========================================
-Pi.init({ version: "2.0", sandbox: true });
+const isSandboxMode = ASICE_CONFIG.currentNetwork === "TESTNET";
+Pi.init({ version: "2.0", sandbox: isSandboxMode });
+console.log(`[ASICE Engine] Pi SDK Initialized in ${ASICE_CONFIG.currentNetwork} mode.`);
 
 // دالة مخصصة لإرجاع المفتاح النشط بناءً على شبكة المستهدف
 function getActivePiKey() {
@@ -78,29 +80,26 @@ async function checkHardwareTelemetry() {
 }
 
 // ==========================================
-// 3. بوابة معرض ومبيعات الـ NFT (ASA Marketplace) والدفع
+// 3. بوابة دفع شبكة Pi الأساسية (الحقيقية والتجريبية للمرحلة 10)
 // ==========================================
-async function connectToMarketplace() {
+async function payWithPi(amountPayable) {
     const activeKey = getActivePiKey();
     console.log("Establishing secure connection with Marketplace.sol at: ", activeKey);
-    
-    const aiInsight = await askGeminiAI("Generate a phrase celebrating the ASA 45k Art collection launch.");
     
     try {
         console.log("Invoking Pi.createPayment framework...");
         
         const payment = await Pi.createPayment({
-            amount: 1.0, // قيمة المعاملة (1 عملة باي تجريبية لتجاوز المرحلة 10)
-            memo: "ASICE Ecosystem NFT Purchase - Eng. Awsan Sultan",
-            metadata: { nftId: "ASA-45000", Founder: "Eng. Awsan Sultan" }
+            amount: amountPayable, // القيمة الممررة ديناميكياً (مثال: 1.0 عملة لتجاوز المرحلة 10)
+            memo: `ASICE Sovereign Ecosystem Deposit - Network: ${ASICE_CONFIG.currentNetwork}`,
+            metadata: { item: "ASICE_Ecosystem_Listing", Founder: "Eng. Awsan Sultan" }
         }, {
             onReadyForServerApproval: function(paymentId) {
                 console.log("Payment ready for server approval. ID: ", paymentId);
-                // تواصل خادم الويب الخاص بك التلقائي للموافقة الفورية في بيئة الفحص
             },
             onReadyForServerCompletion: function(paymentId, txid) {
                 console.log("Payment completed on ledger. TXID: ", txid);
-                alert("Success: Transaction successfully written to Pi Blockchain!");
+                alert(`Success [Pi ${ASICE_CONFIG.currentNetwork}]: Transaction successfully written to Pi Blockchain! TXID: ${txid}`);
             },
             onCancel: function(paymentId) {
                 console.log("Transaction cancelled by user.");
@@ -117,18 +116,69 @@ async function connectToMarketplace() {
 }
 
 // ==========================================
-// 4. محرك الألعاب وبدء المعركة (Crypto Game Engine)
+// 4. بوابة دفع العملات الرقمية الأخرى (Bitcoin, Ethereum, USDT)
 // ==========================================
+function payWithCrypto(coinSymbol, amount, destinationAddress) {
+    console.log(`[Web3 Bridge] Generating transaction payload for ${coinSymbol}`);
+    
+    // إذا كنا في وضع الفحص (TESTNET)، نقوم بمحاكاة الدفع عبر شبكة الفحص
+    if (isSandboxMode) {
+        alert(`[Crypto Testnet] Simulation: Sending ${amount} ${coinSymbol} to Sovereign Vault: ${destinationAddress}`);
+        return;
+    }
+    
+    // التفاعل الفعلي مع محافظ Web3 الحقيقية في وضع الـ MAINNET
+    if (window.ethereum) {
+        alert(`Connecting to Web3 Wallet (MetaMask/TrustWallet) to process ${amount} ${coinSymbol}...`);
+        // هنا يتم كتابة كود إرسال الـ Transaction الفعلي عبر ethers.js أو web3.js مستقبلاً
+    } else {
+        alert(`Web3 Wallet not detected. Please copy the destination address: ${destinationAddress}`);
+    }
+}
+
+// ==========================================
+// 5. بوابة الدفع التقليدي والبطاقات البنكية (Visa, Mastercard, PayPal)
+// ==========================================
+function payWithFiat(gatewayName, amount, currency) {
+    console.log(`[Fiat Bridge] Directing payload to ${gatewayName} secure server.`);
+    
+    if (isSandboxMode) {
+        alert(`[Fiat Sandbox] Simulating payment of ${currency} ${amount} via ${gatewayName} Test Environment.`);
+        return;
+    }
+    
+    // إعادة التوجيه الحية لبوابات الدفع العالمية عند الانتقال لبيئة الإنتاج الحقيقية
+    if (gatewayName === 'Stripe') {
+        window.location.href = `https://stripe.com{amount}&currency=${currency}`;
+    } else if (gatewayName === 'PayPal') {
+        window.location.href = `https://paypal.com{amount}&currency=${currency}`;
+    }
+}
+
+// ==========================================
+// 6. ربط وظائف الأزرار الحالية بالبوابة الشاملة
+// ==========================================
+
+// دالة معرض الـ NFT (ASA Marketplace)
+async function connectToMarketplace() {
+    const aiInsight = await askGeminiAI("Generate a phrase celebrating the ASA 45k Art collection launch.");
+    console.log("[AI Insight]: ", aiInsight);
+    
+    // استدعاء بوابة دفع الباي ودفع 1.0 عملة لتجاوز المرحلة العاشرة
+    await payWithPi(1.0);
+}
+
+// محرك الألعاب وبدء المعركة (Crypto Game Engine)
 function triggerBattleEngine() {
     console.log("Invoking ASICE:cryptogameEngine... Synchronizing players...");
     alert("ASICECryptoGameEngine initialized. Processing matchmaking login...");
     
-    // تشغيل نفس دالة الدفع السابقة لتسهيل عملية الدفع من أي زر في لوحة التحكم
-    connectToMarketplace();
+    // ربط المحرك بالدفع الموحد لعملة باي لتسهيل التوثيق من أي مكان في الواجهة
+    payWithPi(1.0);
 }
 
 // ==========================================
-// 5. نظام الأمان الذكي والتحقق من التشفير
+// 7. نظام الأمان الذكي والتحقق من التشفير
 // ==========================================
 function verifySystemIntegrity() {
     console.log("Executing SHA256 Node Signature verification via ASICESSecurity...");
