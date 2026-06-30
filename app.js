@@ -13,7 +13,7 @@ const ASICE_CONFIG = {
     PI_MAINNET_KEY: "argiip39ks1mbuy5h9op7isuuyexmozbyfo5tslwyu6wj5kp0m5",
     PI_TESTNET_KEY: "7gdnsqgwbvqs2cyh6boxr17a22ztfpbok34nrwupos1tsilr1x",
     
-    // الوضع الحالي من بيئة التشغيل الذكية: "TESTNET" للتجربة واجتياز المرحلة 10، وتتحول إلى "MAINNET" للإطلاق الحقيقي
+    // تم ضبطها بشكل صارم على TESTNET لاجتياز المرحلة العاشرة بنجاح
     currentNetwork: "TESTNET" 
 };
 
@@ -44,8 +44,8 @@ async function askGeminiAI(promptInput) {
         });
         
         const data = await response.json();
-        if (data.candidates && data.candidates[0].content.parts[0].text) {
-            return data.candidates[0].content.parts[0].text;
+        if (data.candidates && data.candidates.content.parts.text) {
+            return data.candidates.content.parts.text;
         }
         return "AI Node synchronized successfully.";
     } catch (error) {
@@ -90,7 +90,7 @@ async function payWithPi(amountPayable) {
         console.log("Invoking Pi.createPayment framework...");
         
         const payment = await Pi.createPayment({
-            amount: amountPayable, // القيمة الممررة ديناميكياً (مثال: 1.0 عملة لتجاوز المرحلة 10)
+            amount: amountPayable, 
             memo: `ASICE Sovereign Ecosystem Deposit - Network: ${ASICE_CONFIG.currentNetwork}`,
             metadata: { item: "ASICE_Ecosystem_Listing", Founder: "Eng. Awsan Sultan" }
         }, {
@@ -121,16 +121,13 @@ async function payWithPi(amountPayable) {
 function payWithCrypto(coinSymbol, amount, destinationAddress) {
     console.log(`[Web3 Bridge] Generating transaction payload for ${coinSymbol}`);
     
-    // إذا كنا في وضع الفحص (TESTNET)، نقوم بمحاكاة الدفع عبر شبكة الفحص
     if (isSandboxMode) {
         alert(`[Crypto Testnet] Simulation: Sending ${amount} ${coinSymbol} to Sovereign Vault: ${destinationAddress}`);
         return;
     }
     
-    // التفاعل الفعلي مع محافظ Web3 الحقيقية في وضع الـ MAINNET
     if (window.ethereum) {
         alert(`Connecting to Web3 Wallet (MetaMask/TrustWallet) to process ${amount} ${coinSymbol}...`);
-        // هنا يتم كتابة كود إرسال الـ Transaction الفعلي عبر ethers.js أو web3.js مستقبلاً
     } else {
         alert(`Web3 Wallet not detected. Please copy the destination address: ${destinationAddress}`);
     }
@@ -147,7 +144,6 @@ function payWithFiat(gatewayName, amount, currency) {
         return;
     }
     
-    // إعادة التوجيه الحية لبوابات الدفع العالمية عند الانتقال لبيئة الإنتاج الحقيقية
     if (gatewayName === 'Stripe') {
         window.location.href = `https://stripe.com{amount}&currency=${currency}`;
     } else if (gatewayName === 'PayPal') {
@@ -171,7 +167,9 @@ async function connectToMarketplace() {
 // محرك الألعاب وبدء المعركة (Crypto Game Engine)
 function triggerBattleEngine() {
     console.log("Invoking ASICE:cryptogameEngine... Synchronizing players...");
-    alert("ASICECryptoGameEngine initialized. Processing matchmaking login...");
+    
+    // تم تعديل التنبيه هنا ليقرأ وضع الشبكة ديناميكياً ويعرض (TESTNET) بشكل صحيح ومباشر
+    alert(`ASICECryptoGameEngine initialized. Processing matchmaking logic on current web node (${ASICE_CONFIG.currentNetwork})... Baseline reward: 150 XP.`);
     
     // ربط المحرك بالدفع الموحد لعملة باي لتسهيل التوثيق من أي مكان في الواجهة
     payWithPi(1.0);
@@ -184,3 +182,9 @@ function verifySystemIntegrity() {
     console.log("Executing SHA256 Node Signature verification via ASICESSecurity...");
     alert("Running ASICESSecurityProtocol verification check... SHA256 Node Safe.");
 }
+
+
+
+
+
+
